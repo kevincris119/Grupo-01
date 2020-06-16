@@ -5,6 +5,9 @@ public class ProveedorModel {
         	
         }
 		public void metodo_lp1() {
-		        	
-	 }
+			
+		}
+		public void metodo_quiensoy(){
+		
+		}
 }
