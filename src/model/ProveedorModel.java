@@ -24,7 +24,7 @@ public class ProveedorModel {
 				con = MySqlDBConexion.getConexion();
 				
 				//2 Se prepara el SQL
-				String sql = "insert into campeonato values(null,?,?,?,?,?,?,?,?)";
+				String sql = "insert into proveedor values(null,?,?,?,?,?,?,?)";
 				pstm = con.prepareStatement(sql);
 				pstm.setString(1, p.getRazonSocial());
 				pstm.setString(2, p.getRuc());
@@ -112,6 +112,7 @@ public class ProveedorModel {
 				pstm.setString(5, p.getCelular());
 				pstm.setString(6, p.getContacto());
 				pstm.setString(7, p.getEstado());
+				pstm.setInt(8, p.getIdproveedor());
 				actualizados = pstm.executeUpdate();
 				System.out.println("actualizados :  " + actualizados);
 			} catch (Exception e) {

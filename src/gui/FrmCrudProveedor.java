@@ -217,20 +217,36 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 	protected void do_btnRegistrar_actionPerformed(ActionEvent arg0) {
 		String razSoc = txtRazSoc.getText().trim();
 		String ruc=txtRuc.getText().trim();
-		
-		
+		String cel = txtCel.getText().trim();
+		String cont = txtContac.getText().trim();
+		String est = txtEstado.getText().trim();		
 		String dir = txtDirec.getText().trim();
 		String tel = txtTelef.getText().trim();
 	
 
 		if (razSoc.matches(Validaciones.TEXTO) == false) {
-			mensaje("La Razon social es de 2 a 20 caracteres");
-		} else if (ruc.matches(Validaciones.RUC) == false) {
+			mensaje("La Razon social es de 4 a 40 caracteres");
+		}else if (ruc.matches(Validaciones.RUC) == false) {
 			mensaje("El Ruc es de 11 dígitos");
-		} else {
+		} else if (cel.matches(Validaciones.CELULAR) == false) {
+			mensaje("El Celular es de 9 dígitos");
+		} else if (cont.matches(Validaciones.TEXTO) == false) {
+			mensaje("El Contacto es de 4 a 40 caracteres");
+		} else if (est.matches(Validaciones.TEXTO) == false) {
+			mensaje("El estado es de 4 a 40 caracteres");
+		} else if (dir.matches(Validaciones.TEXTO) == false) {
+			mensaje("La direccion es de 4 a 40 caracteres");
+		} else if (tel.matches(Validaciones.TELEFONO) == false) {
+			mensaje("El Telefono tiene formato XXX-XXXX");
+		} else{
 			Proveedor obj = new Proveedor();
 			obj.setRazonSocial(razSoc);
 			obj.setRuc(ruc);
+			obj.setCelular(cel);
+			obj.setContacto(cont);
+			obj.setEstado(est);
+			obj.setDireccion(dir);
+			obj.setTelefono(tel);
 
 			ProveedorModel model = new ProveedorModel();
 			int salida = model.insertaProveedor(obj);
@@ -269,18 +285,40 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 		} else {
 			String razSoc = txtRazSoc.getText().trim();
 			String ruc=txtRuc.getText().trim();
-
+			String cel = txtCel.getText().trim();
+			String cont = txtContac.getText().trim();
+			String est = txtEstado.getText().trim();		
+			String dir = txtDirec.getText().trim();
+			String tel = txtTelef.getText().trim();
+		
 			if (razSoc.matches(Validaciones.TEXTO) == false) {
-				mensaje("La Razon social es de 2 a 20 caracteres");
-			} else if (ruc.matches(Validaciones.RUC) == false) {
+				mensaje("La Razon social es de 4 a 40 caracteres");
+			}else if (ruc.matches(Validaciones.RUC) == false) {
 				mensaje("El Ruc es de 11 dígitos");
-			} else {
+			} else if (cel.matches(Validaciones.CELULAR) == false) {
+				mensaje("El Celular es de 9 dígitos");
+			} else if (cont.matches(Validaciones.TEXTO) == false) {
+				mensaje("El Contacto es de 4 a 40 caracteres");
+			} else if (est.matches(Validaciones.TEXTO) == false) {
+				mensaje("El estado es de 4 a 40 caracteres");
+			} else if (dir.matches(Validaciones.TEXTO) == false) {
+				mensaje("La direccion es de 4 a 40 caracteres");
+			} else if (tel.matches(Validaciones.TELEFONO) == false) {
+				mensaje("El Telefono tiene formato XXX-XXXX");
+			} else{
 				Proveedor obj = new Proveedor();
+				obj.setIdproveedor(idSeleccionado);
+				obj.setRazonSocial(razSoc);
 				obj.setRazonSocial(razSoc);
 				obj.setRuc(ruc);
+				obj.setCelular(cel);
+				obj.setContacto(cont);
+				obj.setEstado(est);
+				obj.setDireccion(dir);
+				obj.setTelefono(tel);
 
 				ProveedorModel model = new ProveedorModel();
-				int salida = model.insertaProveedor(obj);
+				int salida = model.actualizaProveedor(obj);
 
 				if (salida > 0) {
 					mensaje("Se envió correctamente");
@@ -346,7 +384,8 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 
 		// Se agregan los campeonatos al jtable
 		for (Proveedor aux : data) {
-			Object[] fila = { aux.getIdproveedor(), aux.getRazonSocial(), aux.getRuc() };
+			Object[] fila = { aux.getIdproveedor(), aux.getRazonSocial(), aux.getRuc(),aux.getDireccion(),aux.getTelefono(),aux.getCelular(),
+							aux.getContacto(),aux.getEstado()};
 			dtm.addRow(fila);
 		}
 	}
