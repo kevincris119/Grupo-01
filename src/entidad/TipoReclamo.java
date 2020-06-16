@@ -1,10 +1,13 @@
 package entidad;
 
+import java.sql.Date;
+
 public class TipoReclamo {
 	private int idTipoReclamo;
 	private String Descripcion;
 	private String Estado;
-	private String FechaRegistro;
+	private Date FechaRegistro;
+	
 	public int getIdTipoReclamo() {
 		return idTipoReclamo;
 	}
@@ -23,11 +26,13 @@ public class TipoReclamo {
 	public void setEstado(String estado) {
 		Estado = estado;
 	}
-	public String getFechaRegistro() {
+	public Date getFechaRegistro() {
 		return FechaRegistro;
 	}
-	public void setFechaRegistro(String fechaRegistro) {
+	public void setFechaRegistro(Date fechaRegistro) {
 		FechaRegistro = fechaRegistro;
 	}
+	
+	
 	
 }
