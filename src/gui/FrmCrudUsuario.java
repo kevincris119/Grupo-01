@@ -27,6 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import entidad.Usuario;
 import model.UsuarioModel;
 import util.Validaciones;
+import javax.swing.JPasswordField;
 
 public class FrmCrudUsuario extends JFrame implements ActionListener, MouseListener {
 
@@ -35,7 +36,6 @@ public class FrmCrudUsuario extends JFrame implements ActionListener, MouseListe
 	private JTextField txtApellido;
 	private JTextField txtDni;
 	private JTextField txtLogin;
-	private JTextField txtPassword;
 	private JTable table;
 	private JButton btnRegistrar;
 	private JButton btnEliminar;
@@ -43,6 +43,7 @@ public class FrmCrudUsuario extends JFrame implements ActionListener, MouseListe
 
 	// Es el id de la fila seleccionado
 	int idSeleccionado = -1;
+	private JTextField txtPassword;
 
 	// ModelCampeonato-->Es la clase donde estan los
 	// métodos insert, update, delete, listar en la BD
@@ -75,92 +76,92 @@ public class FrmCrudUsuario extends JFrame implements ActionListener, MouseListe
 	 */
 	public FrmCrudUsuario() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 466);
+		setBounds(100, 100, 703, 533);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblUsuario = new JLabel("Usuario");
+		JLabel lblUsuario = new JLabel("Mantenimiento Usuario");
 		lblUsuario.setOpaque(true);
 		lblUsuario.setBackground(Color.RED);
 		lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUsuario.setForeground(Color.WHITE);
 		lblUsuario.setFont(new Font("Tahoma", Font.BOLD, 19));
-		lblUsuario.setBounds(10, 11, 414, 59);
+		lblUsuario.setBounds(10, 11, 670, 61);
 		contentPane.add(lblUsuario);
 
 		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(105, 95, 84, 26);
+		lblNombre.setBounds(30, 95, 84, 26);
 		contentPane.add(lblNombre);
 
 		JLabel lblApellidos = new JLabel("Apellidos");
-		lblApellidos.setBounds(105, 142, 46, 26);
+		lblApellidos.setBounds(30, 132, 46, 26);
 		contentPane.add(lblApellidos);
 		
 		JLabel lblDni = new JLabel("Dni");
-		lblDni.setBounds(105, 189, 46, 26);
+		lblDni.setBounds(30, 169, 46, 26);
 		contentPane.add(lblDni);
 		
 		JLabel lblLogin = new JLabel("Login");
-		lblLogin.setBounds(105, 236, 46, 26);
+		lblLogin.setBounds(404, 95, 46, 26);
 		contentPane.add(lblLogin);
 		
 		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setBounds(105, 283, 46, 26);
+		lblPassword.setBounds(404, 135, 46, 26);
 		contentPane.add(lblPassword);
 
 		txtNombre = new JTextField();
-		txtNombre.setBounds(184, 98, 211, 20);
+		txtNombre.setBounds(124, 98, 211, 20);
 		contentPane.add(txtNombre);
 		txtNombre.setColumns(10);
 
 		txtApellido = new JTextField();
-		txtApellido.setBounds(184, 145, 86, 20);
+		txtApellido.setBounds(124, 135, 211, 20);
 		contentPane.add(txtApellido);
 		txtApellido.setColumns(10);
 		
 		txtDni = new JTextField();
-		txtDni.setBounds(184, 192, 86, 20);
+		txtDni.setBounds(124, 172, 211, 20);
 		contentPane.add(txtDni);
 		txtDni.setColumns(10);
 		
 		txtLogin = new JTextField();
-		txtLogin.setBounds(184, 239, 86, 20);
+		txtLogin.setBounds(476, 98, 158, 20);
 		contentPane.add(txtLogin);
 		txtLogin.setColumns(10);
-		
-		txtPassword = new JTextField();
-		txtPassword.setBounds(184, 293, 86, 20);
-		contentPane.add(txtPassword);
-		txtPassword.setColumns(10);
 
 		btnRegistrar = new JButton("Registrar");
 		btnRegistrar.addActionListener(this);
 		btnRegistrar.setIcon(new ImageIcon(FrmCrudUsuario.class.getResource("/iconos/add.gif")));
-		btnRegistrar.setBounds(10, 179, 114, 33);
+		btnRegistrar.setBounds(250, 218, 114, 33);
 		contentPane.add(btnRegistrar);
 
 		btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(this);
 		btnActualizar.setIcon(new ImageIcon(FrmCrudUsuario.class.getResource("/iconos/edit.gif")));
-		btnActualizar.setBounds(310, 179, 114, 33);
+		btnActualizar.setBounds(30, 218, 114, 33);
 		contentPane.add(btnActualizar);
 
 		btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(this);
 		btnEliminar.setIcon(new ImageIcon(FrmCrudUsuario.class.getResource("/iconos/delete.gif")));
-		btnEliminar.setBounds(158, 179, 114, 33);
+		btnEliminar.setBounds(466, 218, 123, 33);
 		contentPane.add(btnEliminar);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 233, 414, 184);
+		scrollPane.setBounds(10, 273, 667, 210);
 		contentPane.add(scrollPane);
 
 		table = new JTable();
 		table.addMouseListener(this);
 		table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Id", "Nombre", "Apellido", "Dni", "Login", "Password" }));
 		scrollPane.setViewportView(table);
+		
+		txtPassword = new JTextField();
+		txtPassword.setBounds(476, 135, 158, 20);
+		contentPane.add(txtPassword);
+		txtPassword.setColumns(10);
 
 		// Traer todos los campeonatos de la BD
 		listaUsuarios();
@@ -193,10 +194,10 @@ public class FrmCrudUsuario extends JFrame implements ActionListener, MouseListe
 				mensaje("El pais es de 3 a 20 caracteres");
 			}else if (dni.matches(Validaciones.DNI) == false) {
 				mensaje("El dni es de 8 digitos");
-			}else if (log.matches(Validaciones.TEXTO) == false) {
-				mensaje("El login es de texto y digitos");
-			}else if (pwd.matches(Validaciones.TEXTO) == false) {
-				mensaje("El password es de texto y digitos");
+			}else if (log.matches(Validaciones.LOGIN) == false) {
+				mensaje("El login es USUARIO seguido de numero");
+			}else if (pwd.matches(Validaciones.PASSWORD) == false) {
+				mensaje("a-zA-ZáéíóúñüÁÉÍÓÚÑÜ seguido de sigitos, entre 6 a 15");
 			}else {
 				// 3 Se crea el objeto jugador
 				Usuario obj = new Usuario();
@@ -250,10 +251,10 @@ public class FrmCrudUsuario extends JFrame implements ActionListener, MouseListe
 				mensaje("El pais es de 3 a 20 caracteres");
 			}else if (dni.matches(Validaciones.DNI) == false) {
 				mensaje("El dni es de 8 digitos");
-			}else if (log.matches(Validaciones.TEXTO) == false) {
-				mensaje("El login es de texto y digitos");
-			}else if (pwd.matches(Validaciones.TEXTO) == false) {
-				mensaje("El password es de texto y digitos");
+			}else if (log.matches(Validaciones.LOGIN) == false) {
+				mensaje("El login es USUARIO seguido de numero");
+			}else if (pwd.matches(Validaciones.PASSWORD) == false) {
+				mensaje("a-zA-ZáéíóúñüÁÉÍÓÚÑÜ seguido de sigitos, entre 6 a 15");
 			}else{
 				// 3 Se crea el objeto jugador
 				Usuario obj = new Usuario();
@@ -269,12 +270,12 @@ public class FrmCrudUsuario extends JFrame implements ActionListener, MouseListe
 				int salida = model.actualizaUsuario(obj);
 
 				if (salida > 0) {
-					mensaje("Se envió correctamente");
+					mensaje("Se actualizo correctamente");
 					listaUsuarios();
 					limpiarCajasTexto();
 					idSeleccionado=-1;
 				} else {
-					mensaje("Error en el registro");
+					mensaje("Error al actualizar");
 				}
 			}
 	}
@@ -347,5 +348,4 @@ public class FrmCrudUsuario extends JFrame implements ActionListener, MouseListe
 		txtPassword.setText("");
 		txtNombre.requestFocus();
 	}
-
 }

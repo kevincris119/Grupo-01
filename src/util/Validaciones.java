@@ -2,6 +2,7 @@ package util;
 
 public class Validaciones {
 	public static final String TEXTO = "[a-zA-ZáéíóúñüÁÉÍÓÚÑÜ\\s]{2,20}";
+	public static final String PASSWORD = "[a-zA-ZáéíóúñüÁÉÍÓÚÑÜ\\d+]{6,15}";
 	public static final String DNI = "[0-9]{8}";
 	public static final String NUM_HIJOS = "[0-9]|[1][0]";
 	public static final String SUELDO = "(\\d+)|(\\d+[.]\\d{1,2})";
@@ -13,4 +14,5 @@ public class Validaciones {
 	public static final String SEDE = "\\d{1,2}";
 	public static final String ANNO = "\\d{4}";
 	public static final String RUC = "\\d{11}";
+	public static final String LOGIN="(USUARIO)(\\d+)";
 }

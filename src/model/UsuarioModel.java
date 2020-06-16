@@ -67,9 +67,9 @@ public class UsuarioModel {
 					u = new Usuario();
 					
 					// Se colocan los campos de la base de datos
-					u.setIdusuario(rs.getInt("idequipo"));
+					u.setIdusuario(rs.getInt("idusuario"));
 					u.setNombre(rs.getString("nombre"));
-					u.setApellido(rs.getString("apellidos"));
+					u.setApellido(rs.getString("apellido"));
 					u.setDni(rs.getString("dni"));
 					u.setLogin(rs.getString("login"));
 					u.setPassword(rs.getString("password"));
@@ -103,6 +103,7 @@ public class UsuarioModel {
 				pstm.setString(3, u.getDni());
 				pstm.setString(4, u.getLogin());
 				pstm.setString(5, u.getPassword());
+				pstm.setInt(6, u.getIdusuario());
 				actualizados = pstm.executeUpdate();
 				System.out.println("actualizados :  " + actualizados);
 			} catch (Exception e1) {
@@ -126,7 +127,7 @@ public class UsuarioModel {
 
 			try {
 				con = MySqlDBConexion.getConexion();
-				String sql ="delete from usuario where idequipo=?";
+				String sql ="delete from usuario where idusuario=?";
 				pstm = con.prepareStatement(sql);
 				pstm.setInt(1, idusuario);
 				
