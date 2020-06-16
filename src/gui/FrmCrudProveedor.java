@@ -218,6 +218,10 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 		String razSoc = txtRazSoc.getText().trim();
 		String ruc=txtRuc.getText().trim();
 		
+		
+		String dir = txtDirec.getText().trim();
+		String tel = txtTelef.getText().trim();
+	
 
 		if (razSoc.matches(Validaciones.TEXTO) == false) {
 			mensaje("La Razon social es de 2 a 20 caracteres");
@@ -313,11 +317,22 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 		int fila = tblProveedor.getSelectedRow();
 
 		idSeleccionado = Integer.parseInt(tblProveedor.getValueAt(fila, 0).toString());
-		String nombre = tblProveedor.getValueAt(fila, 1).toString();
+		String razSoc = tblProveedor.getValueAt(fila, 1).toString();
 		String ruc = tblProveedor.getValueAt(fila, 2).toString();
+		String dir = tblProveedor.getValueAt(fila, 3).toString();
+		String tel = tblProveedor.getValueAt(fila, 4).toString();
+		String cel = tblProveedor.getValueAt(fila, 5).toString();
+		String cont = tblProveedor.getValueAt(fila, 6).toString();
+		String est = tblProveedor.getValueAt(fila, 7).toString();
 
-		txtRazSoc.setText(nombre);
+		txtRazSoc.setText(razSoc);
 		txtRuc.setText(ruc);
+		txtDirec.setText(dir);
+		txtTelef.setText(tel);
+		txtCel.setText(cel);
+		txtContac.setText(cont);
+		txtEstado.setText(est);
+		
 	}
 
 	void listaProveedor() {
@@ -342,7 +357,12 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 
 	void limpiarCajasTexto() {
 		txtRazSoc.setText("");
-		
+		txtRuc.setText("");
+		txtDirec.setText("");
+		txtTelef.setText("");
+		txtCel.setText("");
+		txtContac.setText("");
+		txtEstado.setText("");
 		txtRazSoc.requestFocus();
 	}
 }
