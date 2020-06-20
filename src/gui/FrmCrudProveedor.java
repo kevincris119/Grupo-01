@@ -222,8 +222,7 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 		String est = txtEstado.getText().trim();		
 		String dir = txtDirec.getText().trim();
 		String tel = txtTelef.getText().trim();
-	
-
+		
 		if (razSoc.matches(Validaciones.TEXTO) == false) {
 			mensaje("La Razon social es de 4 a 40 caracteres");
 		}else if (ruc.matches(Validaciones.RUC) == false) {
