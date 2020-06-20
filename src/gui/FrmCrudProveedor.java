@@ -28,6 +28,10 @@ import entidad.Proveedor;
 import model.ProveedorModel;
 import util.Validaciones;
 import java.awt.SystemColor;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.TitledBorder;
 
 @SuppressWarnings("serial")
 public class FrmCrudProveedor extends JFrame implements ActionListener, MouseListener {
@@ -48,16 +52,14 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 	private JTextField txtCel;
 	private JTextField txtContac;
 	private JTextField txtEstado;
-
-	// ModelCampeonato-->Es la clase donde estan los
-	// métodos insert, update, delete, listar en la BD
+	private JButton btnCancelar;
 
 	/**
-	 * Launch the application.
+	 * Launch the application.com.jtattoo.plaf.acryl.AcrylLookAndFeel
 	 */
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel("com.jtattoo.plaf.smart.SmartLookAndFeel");
+			UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
@@ -79,55 +81,47 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 	 * Create the frame.
 	 */
 	public FrmCrudProveedor() {
+		setTitle("PROVEEDOR");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 648, 503);
+		setBounds(100, 100, 826, 551);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblMantenimientoCampeonato = new JLabel("MANTENIMIENTO PROVEEDOR");
-		lblMantenimientoCampeonato.setOpaque(true);
-		lblMantenimientoCampeonato.setBackground(SystemColor.activeCaption);
-		lblMantenimientoCampeonato.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMantenimientoCampeonato.setForeground(Color.WHITE);
-		lblMantenimientoCampeonato.setFont(new Font("Tahoma", Font.BOLD, 19));
-		lblMantenimientoCampeonato.setBounds(10, 11, 613, 59);
-		contentPane.add(lblMantenimientoCampeonato);
-
-		JLabel lblNombre = new JLabel("Razon Social");
-		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNombre.setBounds(10, 81, 84, 26);
-		contentPane.add(lblNombre);
-
-		txtRazSoc = new JTextField();
-		txtRazSoc.setBounds(101, 84, 199, 20);
-		contentPane.add(txtRazSoc);
-		txtRazSoc.setColumns(10);
+		JLabel lblMantenimientoProveedor = new JLabel("MANTENIMIENTO PROVEEDOR");
+		lblMantenimientoProveedor.setOpaque(true);
+		lblMantenimientoProveedor.setBackground(SystemColor.controlDkShadow);
+		lblMantenimientoProveedor.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMantenimientoProveedor.setForeground(Color.WHITE);
+		lblMantenimientoProveedor.setFont(new Font("Tahoma", Font.BOLD, 19));
+		lblMantenimientoProveedor.setBounds(10, 11, 790, 59);
+		contentPane.add(lblMantenimientoProveedor);
 
 		btnRegistrar = new JButton("Registrar");
 		btnRegistrar.addActionListener(this);
-		btnRegistrar.setIcon(new ImageIcon(FrmCrudProveedor.class.getResource("/iconos/add.gif")));
-		btnRegistrar.setBounds(90, 225, 114, 33);
+		btnRegistrar.setIcon(new ImageIcon(FrmCrudProveedor.class.getResource("/iconos/addP.png")));
+		btnRegistrar.setBounds(62, 245, 114, 33);
 		contentPane.add(btnRegistrar);
 
 		btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(this);
-		btnActualizar.setIcon(new ImageIcon(FrmCrudProveedor.class.getResource("/iconos/edit.gif")));
-		btnActualizar.setBounds(390, 225, 114, 33);
+		btnActualizar.setIcon(new ImageIcon(FrmCrudProveedor.class.getResource("/iconos/updateP.png")));
+		btnActualizar.setBounds(520, 245, 114, 33);
 		contentPane.add(btnActualizar);
 
 		btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(this);
-		btnEliminar.setIcon(new ImageIcon(FrmCrudProveedor.class.getResource("/iconos/delete.gif")));
-		btnEliminar.setBounds(238, 225, 114, 33);
+		btnEliminar.setIcon(new ImageIcon(FrmCrudProveedor.class.getResource("/iconos/deleteP.png")));
+		btnEliminar.setBounds(238, 245, 114, 33);
 		contentPane.add(btnEliminar);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 269, 613, 184);
+		scrollPane.setBounds(10, 291, 794, 210);
 		contentPane.add(scrollPane);
 
 		tblProveedor = new JTable();
+		tblProveedor.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		tblProveedor.addMouseListener(this);
 		tblProveedor.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -135,74 +129,121 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 			new String[] {
 				"ID", "Razon Social", "Ruc", "Direccion", "Telefono", "Celular", "Contacto", "Estado"
 			}
-		));
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		tblProveedor.getColumnModel().getColumn(0).setResizable(false);
+		tblProveedor.getColumnModel().getColumn(0).setPreferredWidth(30);
+		tblProveedor.getColumnModel().getColumn(1).setResizable(false);
+		tblProveedor.getColumnModel().getColumn(1).setPreferredWidth(91);
+		tblProveedor.getColumnModel().getColumn(2).setResizable(false);
+		tblProveedor.getColumnModel().getColumn(2).setPreferredWidth(79);
+		tblProveedor.getColumnModel().getColumn(3).setPreferredWidth(114);
+		tblProveedor.getColumnModel().getColumn(4).setResizable(false);
+		tblProveedor.getColumnModel().getColumn(5).setResizable(false);
+		tblProveedor.getColumnModel().getColumn(7).setResizable(false);
 		scrollPane.setViewportView(tblProveedor);
 		
-		JLabel lblRuc = new JLabel("Ruc");
-		lblRuc.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblRuc.setBounds(10, 118, 84, 26);
-		contentPane.add(lblRuc);
 		
-		txtRuc = new JTextField();
-		txtRuc.setColumns(10);
-		txtRuc.setBounds(101, 121, 199, 20);
-		contentPane.add(txtRuc);
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setIcon(new ImageIcon(FrmCrudProveedor.class.getResource("/iconos/cancelP.png")));
+		btnCancelar.addActionListener(this);
+		btnCancelar.setEnabled(false);
+		btnCancelar.setBounds(667, 245, 114, 33);
+		contentPane.add(btnCancelar);
 		
-		JLabel lblDireccion = new JLabel("Direccion");
-		lblDireccion.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblDireccion.setBounds(10, 155, 84, 26);
-		contentPane.add(lblDireccion);
+		listaProveedor();
+		btnActualizar.setEnabled(false);
+		btnCancelar.setEnabled(false);
+		btnEliminar.setEnabled(false);
 		
-		txtDirec = new JTextField();
-		txtDirec.setColumns(10);
-		txtDirec.setBounds(101, 158, 199, 20);
-		contentPane.add(txtDirec);
-		
-		JLabel lblTelefono = new JLabel("Telefono");
-		lblTelefono.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblTelefono.setBounds(10, 188, 84, 26);
-		contentPane.add(lblTelefono);
+		JPanel panel = new JPanel();
+		panel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panel.setBounds(20, 81, 780, 153);
+		contentPane.add(panel);
+		panel.setLayout(null);
 		
 		txtTelef = new JTextField();
+		txtTelef.setBounds(132, 121, 199, 20);
+		panel.add(txtTelef);
 		txtTelef.setColumns(10);
-		txtTelef.setBounds(101, 191, 199, 20);
-		contentPane.add(txtTelef);
 		
-		JLabel lblCelular = new JLabel("Celular");
-		lblCelular.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblCelular.setBounds(321, 81, 84, 26);
-		contentPane.add(lblCelular);
+		txtDirec = new JTextField();
+		txtDirec.setBounds(132, 88, 199, 20);
+		panel.add(txtDirec);
+		txtDirec.setColumns(10);
 		
-		txtCel = new JTextField();
-		txtCel.setColumns(10);
-		txtCel.setBounds(400, 84, 211, 20);
-		contentPane.add(txtCel);
+		txtRuc = new JTextField();
+		txtRuc.setBounds(132, 51, 199, 20);
+		panel.add(txtRuc);
+		txtRuc.setColumns(10);
 		
-		JLabel lblContacto = new JLabel("Contacto");
-		lblContacto.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblContacto.setBounds(321, 118, 84, 26);
-		contentPane.add(lblContacto);
-		
-		txtContac = new JTextField();
-		txtContac.setColumns(10);
-		txtContac.setBounds(400, 121, 211, 20);
-		contentPane.add(txtContac);
-		
-		JLabel lblEstado = new JLabel("Estado");
-		lblEstado.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblEstado.setBounds(321, 155, 84, 26);
-		contentPane.add(lblEstado);
-		
-		txtEstado = new JTextField();
-		txtEstado.setColumns(10);
-		txtEstado.setBounds(400, 158, 211, 20);
-		contentPane.add(txtEstado);
-
-		// Traer todos los campeonatos de la BD
-		listaProveedor();
+				txtRazSoc = new JTextField();
+				txtRazSoc.setBounds(132, 14, 199, 20);
+				panel.add(txtRazSoc);
+				txtRazSoc.setColumns(10);
+				
+						JLabel lblNombre = new JLabel("Razon Social");
+						lblNombre.setBounds(41, 11, 84, 26);
+						panel.add(lblNombre);
+						lblNombre.setFont(new Font("Tahoma", Font.BOLD, 12));
+						
+						JLabel lblRuc = new JLabel("Ruc");
+						lblRuc.setBounds(41, 48, 84, 26);
+						panel.add(lblRuc);
+						lblRuc.setFont(new Font("Tahoma", Font.BOLD, 12));
+						
+						JLabel lblDireccion = new JLabel("Direccion");
+						lblDireccion.setBounds(41, 85, 84, 26);
+						panel.add(lblDireccion);
+						lblDireccion.setFont(new Font("Tahoma", Font.BOLD, 12));
+						
+						JLabel lblTelefono = new JLabel("Telefono");
+						lblTelefono.setBounds(41, 118, 84, 26);
+						panel.add(lblTelefono);
+						lblTelefono.setFont(new Font("Tahoma", Font.BOLD, 12));
+						
+						JLabel lblCelular = new JLabel("Celular");
+						lblCelular.setBounds(480, 8, 84, 26);
+						panel.add(lblCelular);
+						lblCelular.setFont(new Font("Tahoma", Font.BOLD, 12));
+						
+						txtCel = new JTextField();
+						txtCel.setBounds(559, 11, 211, 20);
+						panel.add(txtCel);
+						txtCel.setColumns(10);
+						
+						txtContac = new JTextField();
+						txtContac.setBounds(559, 48, 211, 20);
+						panel.add(txtContac);
+						txtContac.setColumns(10);
+						
+						JLabel lblContacto = new JLabel("Contacto");
+						lblContacto.setBounds(480, 45, 84, 26);
+						panel.add(lblContacto);
+						lblContacto.setFont(new Font("Tahoma", Font.BOLD, 12));
+						
+						JLabel lblEstado = new JLabel("Estado");
+						lblEstado.setBounds(480, 82, 84, 26);
+						panel.add(lblEstado);
+						lblEstado.setFont(new Font("Tahoma", Font.BOLD, 12));
+						
+						txtEstado = new JTextField();
+						txtEstado.setBounds(559, 85, 211, 20);
+						panel.add(txtEstado);
+						txtEstado.setColumns(10);
+		setLocationRelativeTo(this);
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == btnCancelar) {
+			actionPerformedBtnCancelarJButton(arg0);
+		}
 		if (arg0.getSource() == btnActualizar) {
 			do_btnActualizar_actionPerformed(arg0);
 		}
@@ -234,10 +275,10 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 			mensaje("El Contacto es de 4 a 40 caracteres");
 		} else if (est.matches(Validaciones.TEXTO) == false) {
 			mensaje("El estado es de 4 a 40 caracteres");
-		} else if (dir.matches(Validaciones.TEXTO) == false) {
+		} else if (dir.matches(Validaciones.DIRECCION) == false) {
 			mensaje("La direccion es de 4 a 40 caracteres");
 		} else if (tel.matches(Validaciones.TELEFONO) == false) {
-			mensaje("El Telefono tiene formato XXX-XXXX");
+			mensaje("El Telefono tiene formato XXXXXXX");
 		} else{
 			Proveedor obj = new Proveedor();
 			obj.setRazonSocial(razSoc);
@@ -253,12 +294,14 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 
 			if (salida > 0) {
 				mensaje("Se envió correctamente");
+				limpiarCajasTexto();
+				listaProveedor();
 			} else {
 				mensaje("Error en el registro");
 			}
 		}
-		listaProveedor();
-		limpiarCajasTexto();
+		
+		
 	}
 
 
@@ -301,10 +344,10 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 				mensaje("El Contacto es de 4 a 40 caracteres");
 			} else if (est.matches(Validaciones.TEXTO) == false) {
 				mensaje("El estado es de 4 a 40 caracteres");
-			} else if (dir.matches(Validaciones.TEXTO) == false) {
+			} else if (dir.matches(Validaciones.DIRECCION) == false) {
 				mensaje("La direccion es de 4 a 40 caracteres");
 			} else if (tel.matches(Validaciones.TELEFONO) == false) {
-				mensaje("El Telefono tiene formato XXX-XXXX");
+				mensaje("El Telefono tiene formato XXXXXXX");
 			} else{
 				Proveedor obj = new Proveedor();
 				obj.setIdproveedor(idSeleccionado);
@@ -325,6 +368,8 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 					listaProveedor();
 					limpiarCajasTexto();
 					idSeleccionado = -1;
+					btnActualizar.setEnabled(false);
+					btnRegistrar.setEnabled(true);
 				} else {
 					mensaje("Error en la actulización");
 				}
@@ -371,6 +416,11 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 		txtContac.setText(cont);
 		txtEstado.setText(est);
 		
+		btnActualizar.setEnabled(true);
+		btnRegistrar.setEnabled(false);
+		btnCancelar.setEnabled(true);
+		btnEliminar.setEnabled(true);
+		
 	}
 
 	void listaProveedor() {
@@ -382,11 +432,12 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 		// Se coloca a sero las filas
 		dtm.setRowCount(0);
 
-		// Se agregan los campeonatos al jtable
+		// Se agregan los datos al jtable
 		for (Proveedor aux : data) {
 			Object[] fila = { aux.getIdproveedor(), aux.getRazonSocial(), aux.getRuc(),aux.getDireccion(),aux.getTelefono(),aux.getCelular(),
 							aux.getContacto(),aux.getEstado()};
 			dtm.addRow(fila);
+			
 		}
 	}
 
@@ -403,5 +454,13 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 		txtContac.setText("");
 		txtEstado.setText("");
 		txtRazSoc.requestFocus();
+	}
+	protected void actionPerformedBtnCancelarJButton(ActionEvent arg0) {
+		btnActualizar.setEnabled(false);
+		btnRegistrar.setEnabled(true);
+		btnEliminar.setEnabled(false);
+		btnCancelar.setEnabled(false);
+		limpiarCajasTexto();
+		
 	}
 }

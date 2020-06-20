@@ -13,7 +13,7 @@ import util.MySqlDBConexion;
 
 public class ProveedorModel {
 
-	//El metodo que va inserta enb la tabla campeonato
+	//El metodo que va inserta enb la tabla proveedor
 		public int insertaProveedor(Proveedor p){
 			int salida = -1;
 			
