@@ -54,9 +54,7 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 	private JTextField txtEstado;
 	private JButton btnCancelar;
 
-	/**
-	 * Launch the application.com.jtattoo.plaf.acryl.AcrylLookAndFeel
-	 */
+	
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
@@ -121,6 +119,7 @@ public class FrmCrudProveedor extends JFrame implements ActionListener, MouseLis
 		contentPane.add(scrollPane);
 
 		tblProveedor = new JTable();
+		tblProveedor.setSurrendersFocusOnKeystroke(true);
 		tblProveedor.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		tblProveedor.addMouseListener(this);
 		tblProveedor.setModel(new DefaultTableModel(

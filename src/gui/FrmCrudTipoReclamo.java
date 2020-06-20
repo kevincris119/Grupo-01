@@ -46,8 +46,9 @@ public class FrmCrudTipoReclamo extends JFrame implements ActionListener, MouseL
 
 	// Es el id de la fila seleccionado
 	int idSeleccionado = -1;
+	private JButton btnCancelar;
 
-	// ModelCampeonato-->Es la clase donde estan los
+	
 	// métodos insert, update, delete, listar en la BD
 
 	/**
@@ -55,7 +56,7 @@ public class FrmCrudTipoReclamo extends JFrame implements ActionListener, MouseL
 	 */
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel("com.jtattoo.plaf.smart.SmartLookAndFeel");
+			UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
@@ -131,14 +132,14 @@ public class FrmCrudTipoReclamo extends JFrame implements ActionListener, MouseL
 
 		btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(this);
-		btnActualizar.setIcon(new ImageIcon(FrmCrudTipoReclamo.class.getResource("/iconos/edit.gif")));
-		btnActualizar.setBounds(134, 261, 114, 33);
+		btnActualizar.setIcon(new ImageIcon(FrmCrudTipoReclamo.class.getResource("/iconos/updateP.png")));
+		btnActualizar.setBounds(282, 261, 114, 33);
 		contentPane.add(btnActualizar);
 
 		btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(this);
 		btnEliminar.setIcon(new ImageIcon(FrmCrudTipoReclamo.class.getResource("/iconos/delete.gif")));
-		btnEliminar.setBounds(258, 261, 123, 33);
+		btnEliminar.setBounds(134, 261, 123, 33);
 		contentPane.add(btnEliminar);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -146,6 +147,9 @@ public class FrmCrudTipoReclamo extends JFrame implements ActionListener, MouseL
 		contentPane.add(scrollPane);
 
 		table = new JTable();
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		table.setSelectionForeground(Color.WHITE);
+		table.setSurrendersFocusOnKeystroke(true);
 		table.setBackground(Color.WHITE);
 		table.addMouseListener(this);
 		table.setModel(new DefaultTableModel(
@@ -157,12 +161,24 @@ public class FrmCrudTipoReclamo extends JFrame implements ActionListener, MouseL
 		));
 		table.getColumnModel().getColumn(3).setPreferredWidth(97);
 		scrollPane.setViewportView(table);
+		
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(this);
+		btnCancelar.setIcon(new ImageIcon(FrmCrudTipoReclamo.class.getResource("/iconos/cancelP.png")));
+		btnCancelar.setBounds(282, 317, 114, 33);
+		contentPane.add(btnCancelar);
 
-		// Traer todos los campeonatos de la BD
+		
 		listaTipoReclamo();
+		btnEliminar.setEnabled(false);
+		btnCancelar.setEnabled(false);
+		btnActualizar.setEnabled(false);
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == btnCancelar) {
+			actionPerformedBtnCancelarJButton(arg0);
+		}
 		if (arg0.getSource() == btnActualizar) {
 			do_btnActualizar_actionPerformed(arg0);
 		}
@@ -241,6 +257,7 @@ public class FrmCrudTipoReclamo extends JFrame implements ActionListener, MouseL
 				mensaje("La fecha es YYYY-MM-dd");
 			}else {
 				TipoReclamo obj = new TipoReclamo();
+				obj.setIdTipoReclamo(idSeleccionado);
 				obj.setDescripcion(des);
 				obj.setEstado(est);
 				obj.setFechaRegistro(Date.valueOf(fec));
@@ -253,6 +270,9 @@ public class FrmCrudTipoReclamo extends JFrame implements ActionListener, MouseL
 					listaTipoReclamo();
 					limpiarCajasTexto();
 					idSeleccionado= -1;
+					
+					btnRegistrar.setEnabled(true);
+					btnActualizar.setEnabled(false);
 				} else {
 					mensaje("Error al actualizar");
 				}
@@ -290,6 +310,11 @@ public class FrmCrudTipoReclamo extends JFrame implements ActionListener, MouseL
 		txtDescripcion.setText(descripcion);
 		txtEstado.setText(estado);
 		txtFecRegis.setText(fecreg);
+		
+		btnRegistrar.setEnabled(false);
+		btnActualizar.setEnabled(true);
+		btnCancelar.setEnabled(true);
+		btnEliminar.setEnabled(true);
 
 	}
 
@@ -321,5 +346,11 @@ public class FrmCrudTipoReclamo extends JFrame implements ActionListener, MouseL
 		txtEstado.setText("");
 		txtFecRegis.setText("");
 		txtDescripcion.requestFocus();
+	}
+	protected void actionPerformedBtnCancelarJButton(ActionEvent arg0) {
+		btnActualizar.setEnabled(false);
+		btnRegistrar.setEnabled(true);
+		btnEliminar.setEnabled(false);
+		btnCancelar.setEnabled(false);
 	}
 }
