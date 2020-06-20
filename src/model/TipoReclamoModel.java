@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entidad.TipoReclamo;
-import entidad.Usuario;
 import util.MySqlDBConexion;
 
 public class TipoReclamoModel {

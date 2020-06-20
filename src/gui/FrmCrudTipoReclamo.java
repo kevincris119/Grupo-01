@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Date;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -25,14 +26,15 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import entidad.TipoReclamo;
-import entidad.Usuario;
 import model.TipoReclamoModel;
-import model.UsuarioModel;
 import util.Validaciones;
-import javax.swing.JPasswordField;
 
+@SuppressWarnings("serial")
 public class FrmCrudTipoReclamo extends JFrame implements ActionListener, MouseListener {
 
+	/**
+	 * 
+	 */
 	private JPanel contentPane;
 	private JTextField txtDescripcion;
 	private JTextField txtEstado;
@@ -76,7 +78,7 @@ public class FrmCrudTipoReclamo extends JFrame implements ActionListener, MouseL
 	 */
 	public FrmCrudTipoReclamo() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 703, 533);
+		setBounds(100, 100, 771, 416);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -88,59 +90,63 @@ public class FrmCrudTipoReclamo extends JFrame implements ActionListener, MouseL
 		lblTipoReclamo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTipoReclamo.setForeground(Color.WHITE);
 		lblTipoReclamo.setFont(new Font("Tahoma", Font.BOLD, 19));
-		lblTipoReclamo.setBounds(10, 11, 670, 61);
+		lblTipoReclamo.setBounds(10, 11, 735, 61);
 		contentPane.add(lblTipoReclamo);
 
 		JLabel lblDescripcion = new JLabel("Descripcion");
-		lblDescripcion.setBounds(175, 95, 84, 26);
+		lblDescripcion.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblDescripcion.setBounds(29, 102, 114, 26);
 		contentPane.add(lblDescripcion);
 
 		JLabel lblEstado = new JLabel("Estado");
-		lblEstado.setBounds(175, 132, 46, 26);
+		lblEstado.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblEstado.setBounds(29, 150, 114, 26);
 		contentPane.add(lblEstado);
 		
 		JLabel lblFechaRegistro = new JLabel("Fecha de Registro");
-		lblFechaRegistro.setBounds(175, 169, 94, 26);
+		lblFechaRegistro.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblFechaRegistro.setBounds(29, 193, 136, 26);
 		contentPane.add(lblFechaRegistro);
 
 		txtDescripcion = new JTextField();
-		txtDescripcion.setBounds(296, 98, 211, 20);
+		txtDescripcion.setBounds(170, 100, 211, 35);
 		contentPane.add(txtDescripcion);
 		txtDescripcion.setColumns(10);
 
 		txtEstado = new JTextField();
-		txtEstado.setBounds(296, 135, 211, 20);
+		txtEstado.setBounds(170, 148, 211, 35);
 		contentPane.add(txtEstado);
 		txtEstado.setColumns(10);
 		
 		txtFecRegis = new JTextField();
-		txtFecRegis.setBounds(296, 172, 211, 20);
+		txtFecRegis.setBounds(170, 192, 211, 33);
 		contentPane.add(txtFecRegis);
 		txtFecRegis.setColumns(10);
 
 		btnRegistrar = new JButton("Registrar");
 		btnRegistrar.addActionListener(this);
 		btnRegistrar.setIcon(new ImageIcon(FrmCrudTipoReclamo.class.getResource("/iconos/add.gif")));
-		btnRegistrar.setBounds(285, 218, 114, 33);
+		btnRegistrar.setBounds(10, 261, 114, 33);
 		contentPane.add(btnRegistrar);
 
 		btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(this);
 		btnActualizar.setIcon(new ImageIcon(FrmCrudTipoReclamo.class.getResource("/iconos/edit.gif")));
-		btnActualizar.setBounds(30, 218, 114, 33);
+		btnActualizar.setBounds(134, 261, 114, 33);
 		contentPane.add(btnActualizar);
 
 		btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(this);
 		btnEliminar.setIcon(new ImageIcon(FrmCrudTipoReclamo.class.getResource("/iconos/delete.gif")));
-		btnEliminar.setBounds(523, 218, 123, 33);
+		btnEliminar.setBounds(258, 261, 123, 33);
 		contentPane.add(btnEliminar);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 273, 667, 210);
+		scrollPane.setBounds(406, 83, 339, 283);
 		contentPane.add(scrollPane);
 
 		table = new JTable();
+		table.setBackground(Color.WHITE);
 		table.addMouseListener(this);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -170,9 +176,9 @@ public class FrmCrudTipoReclamo extends JFrame implements ActionListener, MouseL
 
 	protected void do_btnRegistrar_actionPerformed(ActionEvent arg0) {
 			// 1 Recibir los valores de la GUI
-			String des = txtDescripcion.getText();
-			String est=txtEstado.getText();
-			String fec=txtFecRegis.getText();
+			String des = txtDescripcion.getText().trim();
+			String est=txtEstado.getText().trim();
+			String fec=txtFecRegis.getText().trim();
 
 
 			// 2 Validaciones
@@ -187,7 +193,7 @@ public class FrmCrudTipoReclamo extends JFrame implements ActionListener, MouseL
 				TipoReclamo obj = new TipoReclamo();
 				obj.setDescripcion(des);
 				obj.setEstado(est);
-				obj.setFechaRegistro(fec);
+				obj.setFechaRegistro(Date.valueOf((fec)));
 
 				// 4 Se envía al modelo de datos
 				TipoReclamoModel model = new TipoReclamoModel();
@@ -219,13 +225,14 @@ public class FrmCrudTipoReclamo extends JFrame implements ActionListener, MouseL
 		}
 	}
 	protected void do_btnActualizar_actionPerformed(ActionEvent arg0) {
-			// 1 Recibir los valores de la GUI
-			String des =txtDescripcion.getText();
-			String est=txtEstado.getText();
-			String fec=txtFecRegis.getText();
-
+		if (idSeleccionado == -1) {
+			mensaje("Se debe seleccionar una fila");
+		} else {
 	
-			// 2 Validaciones
+			String des =txtDescripcion.getText().trim();
+			String est=txtEstado.getText().trim();
+			String fec=txtFecRegis.getText().trim();
+
 			if (des.matches(Validaciones.TEXTO) == false) {
 				mensaje("El nombre es de 3 a 20 caracteres");
 			}else if (est.matches(Validaciones.TEXTO) == false) {
@@ -233,13 +240,11 @@ public class FrmCrudTipoReclamo extends JFrame implements ActionListener, MouseL
 			}else if (fec.matches(Validaciones.FECHA) == false) {
 				mensaje("La fecha es YYYY-MM-dd");
 			}else {
-				// 3 Se crea el objeto tiporeclamo
 				TipoReclamo obj = new TipoReclamo();
 				obj.setDescripcion(des);
 				obj.setEstado(est);
-				obj.setFechaRegistro(fec);
+				obj.setFechaRegistro(Date.valueOf(fec));
 
-				// 4 Se envía al modelo de datos
 				TipoReclamoModel model = new TipoReclamoModel();
 				int salida = model.actualizaTipoReclamo(obj);
 
@@ -247,11 +252,12 @@ public class FrmCrudTipoReclamo extends JFrame implements ActionListener, MouseL
 					mensaje("Se actualizo correctamente");
 					listaTipoReclamo();
 					limpiarCajasTexto();
-					idSeleccionado=-1;
+					idSeleccionado= -1;
 				} else {
 					mensaje("Error al actualizar");
 				}
 			}
+		}
 	}
 	
 	public void mouseClicked(MouseEvent arg0) {
