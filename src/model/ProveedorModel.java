@@ -13,7 +13,7 @@ import util.MySqlDBConexion;
 
 public class ProveedorModel {
 
-	//El metodo que va inserta enb la tabla proveedor
+	//El metodo que va inserta en la tabla proveedor
 		public int insertaProveedor(Proveedor p){
 			int salida = -1;
 			
@@ -156,6 +156,31 @@ public class ProveedorModel {
 			return eliminados;
 		}
 		
+		
+		public int reiniciarAutoincremente(){
+			int salida = -1;
+			
+			Connection con = null;
+			PreparedStatement pstm  = null;
+			try{
+				//1 Conectar a la base de  datos
+				con = MySqlDBConexion.getConexion();
+				
+				//2 Se prepara el SQL
+				String sql = "ALTER TABLE proveedor AUTO_INCREMENT = 0;";
+				pstm = con.prepareStatement(sql);	
+				//3 envia el sql y se recibe la cantidad de registrados
+				salida = pstm.executeUpdate();
+			}catch(Exception e){
+				e.printStackTrace();	
+			}finally{
+				try {
+					if(pstm!= null)pstm.close();
+					if(con!= null)con.close();
+				} catch (Exception e2) {}
+			}
+			return salida;
+		}
 		
 	 }
 
