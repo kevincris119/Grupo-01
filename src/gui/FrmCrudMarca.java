@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -51,7 +53,7 @@ public class FrmCrudMarca extends JFrame implements ActionListener, MouseListene
 	 */
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel("com.jtattoo.plaf.smart.SmartLookAndFeel");
+			UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
@@ -73,10 +75,10 @@ public class FrmCrudMarca extends JFrame implements ActionListener, MouseListene
 	 * Create the frame.
 	 */
 	public FrmCrudMarca() {
-		
+		setResizable(false);
+		cerrar();
 		setTitle("Mantenimiento Marca\r\n");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 428, 565);
+		setBounds(100, 100, 855, 399);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -91,11 +93,9 @@ public class FrmCrudMarca extends JFrame implements ActionListener, MouseListene
 		contentPane.add(lblEstado);
 		
 		lblMantenimientoMarca = new JLabel("Mantenimiento Marca");
-		lblMantenimientoMarca.setBackground(Color.WHITE);
-		lblMantenimientoMarca.setForeground(Color.DARK_GRAY);
 		lblMantenimientoMarca.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblMantenimientoMarca.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMantenimientoMarca.setBounds(10, 19, 393, 25);
+		lblMantenimientoMarca.setBounds(10, 19, 816, 25);
 		contentPane.add(lblMantenimientoMarca);
 		
 		txtNombre = new JTextField();
@@ -110,10 +110,13 @@ public class FrmCrudMarca extends JFrame implements ActionListener, MouseListene
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		scrollPane.setBounds(10, 233, 393, 291);
+		scrollPane.setBounds(333, 65, 493, 284);
 		contentPane.add(scrollPane);
 		
 		tblMarca = new JTable();
+		tblMarca.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		tblMarca.setSelectionForeground(Color.WHITE);
+		tblMarca.setSurrendersFocusOnKeystroke(true);
 		tblMarca.setFillsViewportHeight(true);
 		tblMarca.setModel(new DefaultTableModel(new Object[][] {},new String[] {"ID", "Nombre", "Estado"}));
 		tblMarca.addMouseListener(this);
@@ -121,6 +124,7 @@ public class FrmCrudMarca extends JFrame implements ActionListener, MouseListene
 		scrollPane.setViewportView(tblMarca);
 		
 		btnActualizar = new JButton("Actualizar");
+		btnActualizar.setEnabled(false);
 		btnActualizar.setIcon(new ImageIcon(FrmCrudMarca.class.getResource("/iconos/edit.gif")));
 		btnActualizar.addActionListener(this);
 		btnActualizar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -128,10 +132,11 @@ public class FrmCrudMarca extends JFrame implements ActionListener, MouseListene
 		contentPane.add(btnActualizar);
 		
 		btnEliminar = new JButton("Eliminar");
+		btnEliminar.setEnabled(false);
 		btnEliminar.setIcon(new ImageIcon(FrmCrudMarca.class.getResource("/iconos/delete.gif")));
 		btnEliminar.addActionListener(this);
 		btnEliminar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnEliminar.setBounds(280, 167, 111, 33);
+		btnEliminar.setBounds(20, 232, 111, 33);
 		contentPane.add(btnEliminar);
 		
 		btnRegistrar = new JButton("Registrar");
@@ -141,6 +146,27 @@ public class FrmCrudMarca extends JFrame implements ActionListener, MouseListene
 		btnRegistrar.setBounds(20, 167, 111, 33);
 		contentPane.add(btnRegistrar);
 		listaMarca();
+		seleccionarCursor();
+		
+	}
+	public void cerrar() {
+		try {
+			this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+			addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					confirmarSalida();
+				}
+			});
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void confirmarSalida() {
+		int valor =  JOptionPane.showConfirmDialog(this, "¿Esta seguro que desea salir?", "Advertencia", JOptionPane.YES_NO_OPTION);
+		if(valor == JOptionPane.YES_OPTION) {
+			System.exit(0);
+		}
 	}
 	public void actionPerformed(ActionEvent arg0) {
 		if (arg0.getSource() == btnRegistrar) {
@@ -170,11 +196,13 @@ public class FrmCrudMarca extends JFrame implements ActionListener, MouseListene
 			if (salida > 0) {
 				mensaje("Se envió correctamente");
 				listaMarca();
+				seleccionarCursor();
 				limpiarCajasTexto();
 			} else {
 				mensaje("Error en el registro");
 			}
 		}
+		
 	}
 	protected void actionPerformedbtnActualizar(ActionEvent arg0) {
 		if (idSeleccionado == -1) {
@@ -188,21 +216,26 @@ public class FrmCrudMarca extends JFrame implements ActionListener, MouseListene
 			} else if (estado.matches(Validaciones.TEXTO) == false) {
 				mensaje("Pais es de 2 a 20 caracteres");
 			} else {
-				Marca obj = new Marca();
-				obj.setIdMarca(idSeleccionado);
-				obj.setNombre(nombre);
-				obj.setEstado(estado);
+				int valor = JOptionPane.showConfirmDialog(this, "¿Esta seguro de que desea modificar el registro?", "Advertencia", JOptionPane.YES_NO_OPTION);
+				if(valor==JOptionPane.YES_OPTION) {
+					Marca obj = new Marca();
+					obj.setIdMarca(idSeleccionado);
+					obj.setNombre(nombre);
+					obj.setEstado(estado);
 
-				MarcaModel model = new MarcaModel();
-				int salida = model.actualizaMarca(obj);
+					MarcaModel model = new MarcaModel();
+					int salida = model.actualizaMarca(obj);
 
-				if (salida > 0) {
-					mensaje("Se actualizo correctamente");
-					listaMarca();
-					limpiarCajasTexto();
-					idSeleccionado = -1;
-				} else {
-					mensaje("Error en la actulización");
+					if (salida > 0) {
+						mensaje("Se actualizo correctamente");
+						listaMarca();
+						
+						botones(false);
+						limpiarCajasTexto();
+						idSeleccionado = -1;
+					} else {
+						mensaje("Error en la actulización");
+					}
 				}
 			}
 		}
@@ -213,15 +246,21 @@ public class FrmCrudMarca extends JFrame implements ActionListener, MouseListene
 		if (idSeleccionado == -1) {
 			mensaje("Seleccione una fila");
 		} else {
-			MarcaModel m = new MarcaModel();
-			int s=m.eliminaMarca(idSeleccionado);
-			if (s > 0) {
-				mensaje("Se elimino correctamente");
-				listaMarca();
-				limpiarCajasTexto();
-				idSeleccionado = -1;
-			} else {
-				mensaje("Error en la eliminación");
+			int valor = JOptionPane.showConfirmDialog(this, "¿Esta seguro de que desea eliminar el registro?", "Advertencia", JOptionPane.YES_NO_OPTION);
+			if(valor==JOptionPane.YES_OPTION) {
+				MarcaModel m = new MarcaModel();
+				int s=m.eliminaMarca(idSeleccionado);
+				if (s > 0) {
+					mensaje("Se elimino correctamente");
+					listaMarca();
+					limpiarCajasTexto();
+					idSeleccionado = -1;
+					botones(false);
+					seleccionarCursor();
+				} else {
+					mensaje("Error en la eliminación");
+				}
+			
 			}
 		}
 
@@ -254,6 +293,12 @@ public class FrmCrudMarca extends JFrame implements ActionListener, MouseListene
 			
 			txtNombre.setText(nombre);
 			txtEstado.setText(estado);
+			
+			
+			btnRegistrar.setEnabled(false);
+			btnActualizar.setEnabled(true);
+			btnEliminar.setEnabled(true);
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -268,10 +313,24 @@ public class FrmCrudMarca extends JFrame implements ActionListener, MouseListene
 			dtm.addRow(fila);
 		}
 	}
-
+	void seleccionarCursor() {
+		int x = tblMarca.getRowCount();
+		if(x==0) {
+			tblMarca.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		}else {
+			tblMarca.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		}
+		
+	}
 	void mensaje(String m) {
 		JOptionPane.showMessageDialog(this, m);
 	}
+	void botones(boolean x) {
+		btnRegistrar.setEnabled(true);
+		btnEliminar.setEnabled(x);
+		btnActualizar.setEnabled(x);
+	}
+
 	void limpiarCajasTexto() {
 		txtNombre.setText("");
 		txtEstado.setText("");
