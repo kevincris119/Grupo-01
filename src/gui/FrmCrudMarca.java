@@ -47,6 +47,7 @@ public class FrmCrudMarca extends JFrame implements ActionListener, MouseListene
 	private JButton btnEliminar;
 	private JButton btnRegistrar;
 	int idSeleccionado = -1;
+	private JButton btnCancelar;
 
 	/**
 	 * Launch the application.
@@ -145,6 +146,15 @@ public class FrmCrudMarca extends JFrame implements ActionListener, MouseListene
 		btnRegistrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnRegistrar.setBounds(20, 167, 111, 33);
 		contentPane.add(btnRegistrar);
+		
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setIcon(new ImageIcon(FrmCrudMarca.class.getResource("/iconos/cancelP.png")));
+		btnCancelar.setEnabled(false);
+		btnCancelar.addActionListener(this);
+		btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnCancelar.setBounds(151, 232, 111, 33);
+		contentPane.add(btnCancelar);
+		
 		listaMarca();
 		seleccionarCursor();
 		
@@ -178,6 +188,12 @@ public class FrmCrudMarca extends JFrame implements ActionListener, MouseListene
 		if (arg0.getSource() == btnEliminar) {
 			actionPerformedbtnEliminar(arg0);
 		}
+		if (arg0.getSource() == btnCancelar) {
+			actionPerformedbtnCancelar(arg0);
+		}
+	}
+	protected void actionPerformedbtnCancelar(ActionEvent arg0) {
+		botones(false);
 	}
 	protected void actionPerformedbtnRegistrar(ActionEvent arg0) {
 		String nombre = txtNombre.getText().trim();
