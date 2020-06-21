@@ -194,6 +194,7 @@ public class FrmCrudMarca extends JFrame implements ActionListener, MouseListene
 	}
 	protected void actionPerformedbtnCancelar(ActionEvent arg0) {
 		botones(false);
+		btnCancelar.setEnabled(false);
 	}
 	protected void actionPerformedbtnRegistrar(ActionEvent arg0) {
 		String nombre = txtNombre.getText().trim();
