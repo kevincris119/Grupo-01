@@ -314,6 +314,7 @@ public class FrmCrudMarca extends JFrame implements ActionListener, MouseListene
 			btnRegistrar.setEnabled(false);
 			btnActualizar.setEnabled(true);
 			btnEliminar.setEnabled(true);
+			btnCancelar.setEnabled(true);
 			
 		} catch (Exception e) {
 			// TODO: handle exception
